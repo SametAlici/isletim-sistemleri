@@ -1,6 +1,6 @@
 # İşletim Sistemleri Çalışma Rehberi
 
-9 haftanın özetleri, çıkmış sınavların adım adım çözümleri (2024 vize, 2023-2024 ve 2022-2023 final) ve 5 vize + 5 final denemesi.
+9 haftanın özetleri, 2006–2024 arası bütün çıkmış sınavların adım adım çözümleri (15 sınav, 240 soru) ve 5 vize + 5 final denemesi.
 
 Site: https://sametalici.github.io/isletim-sistemleri/
 

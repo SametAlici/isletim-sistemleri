@@ -77,8 +77,13 @@ function renderNav(current) {
   html += `<div class="nav-group">Vize konuları (1–5)</div>` + VIZE_WEEKS.map(weekBtn).join("");
   html += `<div class="nav-group">Final konuları (6–9)</div>` + FINAL_WEEKS.map(weekBtn).join("");
   html += `<div class="nav-group">Çıkmış sorular</div>`;
-  html += `<button data-go="cikmis" class="${current === "cikmis" ? "active" : ""}"><span class="num">📄</span>Tüm kâğıtlar (PDF)</button>`;
-  html += SOLVED.map(s => `<button data-go="cikmis-${s.id}" class="${current === "cikmis-" + s.id ? "active" : ""}"><span class="num">✓</span><span>${s.title.split(" (")[0]} çözümü</span></button>`).join("");
+  html += `<button data-go="cikmis" class="${current === "cikmis" ? "active" : ""}"><span class="num">📄</span>Tüm kâğıtlar ve çözümler</button>`;
+  // Menü uzamasın diye yalnızca en yeni üç sınav ayrıca listelenir; hepsi "Tüm kâğıtlar" sayfasında.
+  html += SOLVED.slice(0, 3).map(s => `<button data-go="cikmis-${s.id}" class="${current === "cikmis-" + s.id ? "active" : ""}"><span class="num">✓</span><span>${s.title.split(" (")[0]} çözümü</span></button>`).join("");
+  if (current.startsWith("cikmis-") && !SOLVED.slice(0, 3).some(s => "cikmis-" + s.id === current)) {
+    const s = SOLVED.find(x => "cikmis-" + x.id === current);
+    if (s) html += `<button class="active" data-go="${current}"><span class="num">✓</span><span>${s.title.split(" (")[0]} çözümü</span></button>`;
+  }
   html += `<div class="nav-group">Denemeler</div>`;
   html += `<button data-go="denemeler" class="${current === "denemeler" ? "active" : ""}"><span class="num">≡</span>Tüm denemeler</button>`;
   html += TESTS.map((t, i) => t.kind === "vize" ? testBtn(t, i) : "").join("");
@@ -103,8 +108,8 @@ function renderHome() {
     <p class="lead">9 haftanın özetleri, çıkmış sınavların adım adım çözümleri ve çıkmış sorular tarzında 5 vize ve 5 final denemesi. Vize 1–5. haftalardan, final ağırlıklı olarak 6–9. haftalardan sorar.</p>
     <div class="card"><b>İlerleme:</b> ${done.length} / ${WEEKS.length} hafta tamamlandı</div>
     <div class="box warn"><span class="label">📄 Çıkmış sorular</span>
-      2024 vizesi, 2023-2024 ve 2022-2023 finallerinin her sorusu adım adım çözüldü; her çözümde "Konuya git" ile ilgili ders başlığına gidebilirsin.
-      Diğer yılların kâğıtları PDF olarak açılıp indirilebilir. <a href="#cikmis">Çıkmış sorulara git →</a>
+      2006'dan 2024'e kadar bütün çıkmış kâğıtlar (${SOLVED.length} sınav, ${SOLVED.reduce((a, s) => a + s.questions.length, 0)} soru) adım adım çözüldü; her çözümde "Konuya git" ile ilgili ders başlığına gidebilirsin.
+      Kâğıtlar PDF olarak açılıp indirilebilir. <a href="#cikmis">Çıkmış sorulara git →</a>
     </div>
     <h2>Vize konuları (1–5. hafta)</h2>
     ${weekCards(VIZE_WEEKS, done)}
